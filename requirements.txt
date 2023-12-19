@@ -1,3 +1,4 @@
 git+https://github.com/UKPLab/requests.git
 git+https://github.com/UKPLab/joblib.git
 git+https://github.com/UKPLab/scikit-learn.git
+git+https://github.com/UKPLab/streamlit.git
