@@ -4,7 +4,6 @@ import pandas as pd
 import joblib
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from streamlit_option_menu import option_menu
 import base64
 import plotly.express as px
 from datetime import datetime
