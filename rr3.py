@@ -5,7 +5,6 @@ import joblib
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 import base64
-import plotly.express as px
 from datetime import datetime
 
 local_time = datetime.now().strftime("%Y-%m-%d %H:%M")
