@@ -63,7 +63,7 @@ st.markdown("""
 # Menampilkan judul rata tengah
 st.markdown('<h1 class="centered-title" style="margin-bottom: 20px;">Prediksi Curah Hujan Wilayah Yogyakarta</h1>', unsafe_allow_html=True)
 
-selected2 = option_menu(None, ["Home", "Manual Predict", "About"], 
+selected2 = option_menu(None, ["Home", "Prediksi Manual", "Tentang"], 
     icons=['house', 'water', 'cloud'], 
     menu_icon="cast", default_index=0, orientation="horizontal")
 
@@ -146,7 +146,7 @@ with st.container():
 
         
         # Prediction
-        if st.button("Predict"):
+        if st.button("Prediksi"):
     
         # Menggunakan dua kolom untuk menampilkan hasil prediksi
             col1, col2 = st.columns(2)
@@ -162,23 +162,31 @@ with st.container():
                 f"</div>"
                 f"</div>", unsafe_allow_html=True)
                 
-                st.markdown(f"<div style='margin-bottom: 2px;'><b>Waktu:</b></div>"
-                f"<div>{local_time}</div>", unsafe_allow_html=True)
-                
-                st.markdown(f"<div style='margin-bottom: 2px;'><b>Predicted Rainfall:</b></div>"
-                f"<div>{predicted_rainfall} mm/hari</div>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<div style='display: flex; flex-direction: row; margin-bottom: 10px;'>"
+                    f"<div style='flex: 1; margin-right: 5px;'>"
+                    f"<b>Waktu:</b><br>{local_time}"
+                    f"</div>"
+                    f"<div style='flex: 1;'>"
+                    f"<b>Prediksi Curah Hujan:</b><br>{predicted_rainfall:.2f} mm/hari"
+                    f"</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
 
             # Menampilkan hasil prediksi dan kategori cuaca di kolom kanan
             with col2:
+
                 # Make prediction
                 new_prediction = loaded_model.predict(new_value)
                 predicted_rainfall = max(0, new_prediction[0])  # Memastikan hasil prediksi tidak negatif
 
                 # Kategorisasi cuaca berdasarkan intensitas hujan
                 if predicted_rainfall == 0:
+                    # Menampilkan gambar jika kategori adalah "Berawan"
                     st.image('awan.png', caption='Berawan', width=170)
                 elif 0.5 < predicted_rainfall <= 20:
-                    st.write("Weather Category: Hujan Ringan")
+                    st.image('ringan.png', caption='Hujan Ringan', width=170)
                 elif 21 < predicted_rainfall <= 50:
                     st.write("Weather Category: Hujan Sedang")
                 elif 51 < predicted_rainfall <= 100:
@@ -188,39 +196,20 @@ with st.container():
                 else:
                     st.write("Weather Category: Hujan Ekstrem")
 
-    elif selected2 == "Manual Predict":
+    elif selected2 == "Prediksi Manual":
         # Input user untuk suhu dan kelembaban menggunakan kolom input
         user_temp = st.number_input("Temperature (°C)", min_value=-10, max_value=40, value=25)
         user_humidity = st.number_input("Humidity (%)", min_value=0, max_value=100, value=50)
         loaded_model = joblib.load('linear_regression_model.joblib')
 
         # Tombol untuk prediksi
-        if st.button("Predict"):
+        if st.button("Prediksi"):
             # Format data untuk prediksi
             new_value = [[user_temp, user_humidity]]
 
             # Make prediction
             new_prediction = loaded_model.predict(new_value)
             predicted_rainfall = max(0, new_prediction[0])  # Memastikan hasil prediksi tidak negatif
-
-            # Menampilkan hasil prediksi
-            st.write("Manual Prediction:")
-            st.write(f"Temperature: {user_temp}°C, Humidity: {user_humidity}%")
-            st.write(f"Predicted Rainfall: {predicted_rainfall} mm/hari")
-
-            # Kategorisasi cuaca berdasarkan intensitas hujan
-            if predicted_rainfall == 0:
-                st.write("Weather Category: Berawan")
-            elif 0.5 < predicted_rainfall <= 20:
-                st.write("Weather Category: Hujan Ringan")
-            elif 21 < predicted_rainfall <= 50:
-                st.write("Weather Category: Hujan Sedang")
-            elif 51 < predicted_rainfall <= 100:
-                st.write("Weather Category: Hujan Lebat")
-            elif 101 < predicted_rainfall <= 150:
-                st.write("Weather Category: Hujan Sangat Lebat")
-            else:
-                st.write("Weather Category: Hujan Ekstrem")
 
             # Menggunakan dua kolom untuk menampilkan hasil prediksi
             col1, col2 = st.columns(2)
@@ -236,27 +225,20 @@ with st.container():
                 f"</div>"
                 f"</div>", unsafe_allow_html=True)
                 
-                st.markdown(f"<div style='margin-bottom: 2px;'><b>Waktu:</b></div>"
-                f"<div>{local_time}</div>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<div style='display: flex; flex-direction: row; margin-bottom: 10px;'>"
+                    f"<div style='flex: 1; margin-right: 5px;'>"
+                    f"<b>Waktu:</b><br>{local_time}"
+                    f"</div>"
+                    f"<div style='flex: 1;'>"
+                    f"<b>Prediksi Curah Hujan:</b><br>{predicted_rainfall:.2f} mm/hari"
+                    f"</div>"
+                    f"</div>",
+                    unsafe_allow_html=True
+                )
 
             # Menampilkan hasil prediksi dan kategori cuaca di kolom kanan
             with col2:
-                col2.markdown(
-                    """
-                    <style>
-                        .centered-content {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            text-align: center;
-                            background-color: #001F3F;  /* Blue Dark */
-                            padding: 20px;  /* Menambahkan padding agar kontennya tidak tepat di pinggir */
-                            border-radius: 10px;  /* Memberikan sudut yang lebih lembut */
-                        }
-                    </style>
-                    """,
-                    unsafe_allow_html=True
-                )
 
                 # Make prediction
                 new_prediction = loaded_model.predict(new_value)
@@ -278,18 +260,37 @@ with st.container():
                     st.write("Weather Category: Hujan Ekstrem")
 
 
-    elif selected2 == "About":
+    elif selected2 == "Tentang":
         
         
-        st.title("About this App")
+        st.title("Tentang Aplikasi")
             
-        st.write("This web app predicts rainfall in the Yogyakarta region based on temperature and humidity.")
+        st.write(
+            "Aplikasi ini menyajikan prediksi curah hujan di wilayah Yogyakarta "
+            "berdasarkan suhu dan kelembaban. Menggunakan model Regresi Linier yang telah terlatih, "
+            "aplikasi memberikan kategori cuaca, mulai dari kondisi berawan hingga hujan ekstrem. "
+            "Data cuaca real-time diperoleh dari WeatherAPI untuk memperbarui prediksi dengan akurat. "
+            "Aplikasi ini dirancang untuk memberikan informasi prakiraan cuaca yang lebih mudah dipahami "
+            "dan dapat diakses secara manual oleh pengguna."
+        )
+
                 
         st.title("Langkah-langkah:")
+        st.subheader("Pengumpulan Data")
+        st.write("Dalam fase pengumpulan data, informasi diperoleh melalui ekstraksi dari data online Badan Meteorologi, Klimatologi, dan Geofisika (BMKG), selama periode yang berlangsung dari 1 Januari 2022 hingga 28 Oktober 2023." 
+                 "Sebanyak 668 data meteorologi dikumpulkan untuk mendukung analisis dan pemahaman kondisi terkait curah hujan." 
+                 "Data-data ini kemudian diubah ke dalam format file CSV untuk memudahkan proses pengolahan data selanjutnya.")
+        st.write("Kemudian, penentuan variabel. Penentuan variabel independen yang digunakan melibatkan pemilihan dua parameter kunci, yaitu suhu (X1) dan kelembaban (X2)."
+                 "Dua variabel ini dipilih karena memiliki potensi untuk memberikan kontribusi signifikan terhadap fenomena cuaca yang sedang diteliti."
+                 "Sementara itu, variabel dependen dalam penelitian ini adalah curah hujan (Y), sebagai parameter sentral dalam proses analisis prediksi.")
+        st.subheader("Metode Analisis")
+        st.write(".")
         st.subheader("Data Preprocessing")
-        st.write("The app reads climate data from 'iklim.csv', removes rows with missing values, drops unnecessary columns, "
-                        "and handles special values like 8888.")
-
+        st.write("1. Penghapusan data “NaN” dan 8888"
+                 "Jumlah awal total data adalah dari 668 entri data. Setelah tahap penghapusan ini, jumlah data tersedia berkurang menjadi 626.")
+        st.write("2. Menghapus kolom variabel yang tidak digunakan"
+                 "Setelah kolom variabel yang tidak terpakai terhapus, maka hanya tersisa 3 kolom variabel yang akan digunakan untuk memprediksi curah hujan harian,"
+                 "yaitu suhu (Tavg ), kelembaban (RH_avg), dan curah hujan (RR).")
         st.subheader("Model Training")
         st.write("A Linear Regression model is trained using the remaining data after preprocessing. The model is then saved "
                         "to 'linear_regression_model.joblib'.")
