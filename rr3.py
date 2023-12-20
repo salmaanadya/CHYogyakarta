@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from streamlit_option_menu import option_menu
 import base64
+import plotly.express as px
 from datetime import datetime
 
 local_time = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -164,34 +165,17 @@ with st.container():
                 st.markdown(f"<div style='margin-bottom: 2px;'><b>Waktu:</b></div>"
                 f"<div>{local_time}</div>", unsafe_allow_html=True)
                 
-                st.write(f"Predicted Rainfall: {predicted_rainfall} mm/hari")
+                st.markdown(f"<div style='margin-bottom: 2px;'><b>Predicted Rainfall:</b></div>"
+                f"<div>{predicted_rainfall} mm/hari</div>", unsafe_allow_html=True)
 
             # Menampilkan hasil prediksi dan kategori cuaca di kolom kanan
             with col2:
-                col2.markdown(
-                    """
-                    <style>
-                        .centered-content {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            text-align: center;
-                            background-color: #001F3F;  /* Blue Dark */
-                            padding: 20px;  /* Menambahkan padding agar kontennya tidak tepat di pinggir */
-                            border-radius: 10px;  /* Memberikan sudut yang lebih lembut */
-                        }
-                    </style>
-                    """,
-                    unsafe_allow_html=True
-                )
-                
                 # Make prediction
                 new_prediction = loaded_model.predict(new_value)
                 predicted_rainfall = max(0, new_prediction[0])  # Memastikan hasil prediksi tidak negatif
 
                 # Kategorisasi cuaca berdasarkan intensitas hujan
                 if predicted_rainfall == 0:
-                    # Menampilkan gambar jika kategori adalah "Berawan"
                     st.image('awan.png', caption='Berawan', width=170)
                 elif 0.5 < predicted_rainfall <= 20:
                     st.write("Weather Category: Hujan Ringan")
