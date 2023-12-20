@@ -1,4 +1,4 @@
-oblib
+joblib
 pandas
 plotly
 Requests
