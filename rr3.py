@@ -247,7 +247,7 @@ with st.container():
         st.write("Tingkat Kesalahan dan Akurasi")
         st.write("1. RMSE       : 10.28")
         st.write("2. Akurasi    : 0.88")
-        st.write("3. Precission : 10.28")
+        st.write("3. Precission : 1.00")
         st.write("4. Recall     : 0.88")
         st.write("5. F1 Score   : 0.94")
         
