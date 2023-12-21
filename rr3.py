@@ -171,14 +171,7 @@ with st.container():
                 f"</div>", unsafe_allow_html=True)
                 
                 st.markdown(
-                    f"<div style='display: flex; flex-direction: row; margin-bottom: 10px;'>"
-                    f"<div style='flex: 1; margin-right: 5px;'>"
-                    f"<b>Waktu:</b><br>{local_time}" #Waktu
-                    f"</div>"
-                    f"<div style='flex: 1;'>"
-                    f"<b>Prediksi Curah Hujan:</b><br>{predicted_rainfall:.2f} mm/hari" #Intensitas
-                    f"</div>"
-                    f"</div>",
+                    f"<b>Prediksi Curah Hujan:</b><br>{predicted_rainfall:.2f} mm/hari", #Intensitas
                     unsafe_allow_html=True
                 )
 
